@@ -1,0 +1,25 @@
+#version: '3.7'
+#
+#services:
+#  minio:
+#    container_name: minio
+#    networks:
+#      - proxy
+#    labels:
+#      - traefik.http.routers.minio-http.rule=Host(`minio.example.com`)
+#      - traefik.http.routers.minio-http.entrypoints=http
+#      - traefik.http.routers.minio-http.middlewares=redirect
+#      - traefik.http.routers.minio-https.rule=Host(`minio.example.com`)
+#      - traefik.http.routers.minio-https.entrypoints=https
+#      - traefik.http.routers.minio-https.tls=true
+#      - traefik.http.routers.minio-https.tls.certresolver=letsencrypt
+#      - traefik.http.services.minio.loadbalancer.server.port=9000
+#      - traefik.http.middlewares.redirect.redirectscheme.scheme=https
+#
+#networks:
+#  proxy:
+#    external: true
+#
+#volumes:
+#  minio-vol:
+#    name: minio

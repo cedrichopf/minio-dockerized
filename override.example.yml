@@ -1,25 +1,33 @@
-#version: '3.7'
-#
-#services:
-#  minio:
-#    container_name: minio
-#    networks:
-#      - proxy
-#    labels:
-#      - traefik.http.routers.minio-http.rule=Host(`minio.example.com`)
-#      - traefik.http.routers.minio-http.entrypoints=http
-#      - traefik.http.routers.minio-http.middlewares=redirect
-#      - traefik.http.routers.minio-https.rule=Host(`minio.example.com`)
-#      - traefik.http.routers.minio-https.entrypoints=https
-#      - traefik.http.routers.minio-https.tls=true
-#      - traefik.http.routers.minio-https.tls.certresolver=letsencrypt
-#      - traefik.http.services.minio.loadbalancer.server.port=9000
-#      - traefik.http.middlewares.redirect.redirectscheme.scheme=https
-#
-#networks:
-#  proxy:
-#    external: true
-#
-#volumes:
-#  minio-vol:
-#    name: minio
+version: "3.7"
+
+services:
+  # Service Configuration
+  # Overwrite or add configuration values to the docker-compose deployment
+  minio:
+    container_name: minio # Remove if using multiple instances
+    # If Traefik is not used, ports can be published by using the section below
+    # to make the MinIO instance available, e.g.:
+    #ports:
+    #  - "9000:9000"
+    networks:
+      - proxy # Remove if Traefik is not used
+    labels:
+      # Traefik configuration for MinIO, hostnames need to be changed
+      - traefik.http.routers.minio-http.rule=Host(`minio.example.com`)
+      - traefik.http.routers.minio-http.entrypoints=http
+      - traefik.http.routers.minio-http.middlewares=redirect
+      - traefik.http.routers.minio-https.rule=Host(`minio.example.com`)
+      - traefik.http.routers.minio-https.entrypoints=https
+      - traefik.http.routers.minio-https.tls=true
+      - traefik.http.routers.minio-https.tls.certresolver=letsencrypt
+      - traefik.http.services.minio.loadbalancer.server.port=9000
+      - traefik.http.middlewares.redirect.redirectscheme.scheme=https
+
+networks:
+  # The proxy network is used by Traefik to discover and connect the HTTP services
+  proxy:
+    external: true # Remove if you're not using Traefik
+
+volumes:
+  minio-vol:
+    name: minio
